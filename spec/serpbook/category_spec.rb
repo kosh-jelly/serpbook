@@ -3,7 +3,8 @@ require 'spec_helper'
 describe Serpbook::Category, :vcr do
 
    before :each do
-      @cat = Serpbook::Category.new(name: 'PBN Tests')
+      @category_name = ENV['test_category_name']
+      @cat = Serpbook::Category.new(name: @category_name)
     end
 
   describe 'setup' do

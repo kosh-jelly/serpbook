@@ -15,21 +15,22 @@ describe Serpbook, :vcr do
 
     it 'configures email' do
       Serpbook.config do |conf|
-        conf.email = 'josh@kellys.org'
+        conf.email = 'myemail@gmail.com'
       end
-      expect(Serpbook.configuration.email).to eq 'josh@kellys.org'
+      expect(Serpbook.configuration.email).to eq 'myemail@gmail.com'
     end
   end
 
   describe 'categories' do
     it 'gets a list of current categories' do
-      expect(Serpbook.categories.keys).to include 'PBN Tests'
+      expect(Serpbook.categories.keys).to include ENV['test_category_name']
     end
 
     it 'gets view key and category key from categories' do
-      pbn_tests = Serpbook.categories['PBN Tests']
-      expect(pbn_tests[:viewkey]).to eq '1w5jv1'
-      expect(pbn_tests[:auth]).to eq 'a85cdcd82dcd769bbd0c58dfb6f084b9'
+      
+      pbn_tests = Serpbook.categories[ENV['test_category_name']]
+      expect(pbn_tests[:viewkey]).to be_a String
+      expect(pbn_tests[:auth]).to be_a String
     end
   end
 end

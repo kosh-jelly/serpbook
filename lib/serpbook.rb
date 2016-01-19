@@ -32,13 +32,11 @@ module Serpbook
       full_params = default_params.merge(params)
       response = self.get('/', query: full_params, verify: false)
 
-      json_data = JSON.parse(response.body)
-
-      if response.code != 200 || (json_data["Response"] && json_data["Response"] != 200)
+      if response.code != 200
         raise ResponseError, "responded with #{response.code}, and messsage #{response.body}"
       end
 
-      json_data
+      JSON.parse(response.body)
     end
 
     private
