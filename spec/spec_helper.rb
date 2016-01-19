@@ -1,6 +1,8 @@
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 require 'serpbook'
 
+require 'awesome_print'
+require 'vcr'
 require '.env.rb'
 
 VCR.configure do |c|
@@ -15,6 +17,13 @@ RSpec.configure do |config|
     name = example.metadata[:full_description].split(/\s+/, 2).join("/").gsub(/[^\w\/]+/, "_")
     options = {} #example.metadata.slice(:record, :match_requests_on).except(:example_group)
     VCR.use_cassette(name, options) { example.call }
+  end
+
+  config.before :each do
+    Serpbook.config do |conf|
+      conf.master_key = ENV['serpbook_master_key']
+      conf.email = ENV['serpbook_email']
+    end
   end
 
   config.filter_run :focus
