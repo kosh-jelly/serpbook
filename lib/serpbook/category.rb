@@ -21,6 +21,12 @@ module Serpbook
       @rankings ||= Rankings.new(Serpbook.request(auth: cat_auth, viewkey: viewkey))
     end
 
+    def get_keyword(url, keyword, region: 'google.com', language: 'en', start_date: nil)
+      Rankings.new(Serpbook.request(single: '1', auth: cat_auth, viewkey: viewkey, kw: keyword, 
+                       url: clean_url(url), region: region, language: language, category: name,
+                       start_date: start_date))
+    end
+
     def create(url, keyword, region: 'google.com', language: 'en', ignore_local: true)
       exact = url.start_with?('http') ? 1 : 0
       ignore_local = ignore_local ? 1 : 0
@@ -63,7 +69,7 @@ module Serpbook
 
   private
     def clean_url(url)
-      url.gsub('http://', '')
+      url.gsub('http://', '').gsub('https://', '')
     end
 
     def fetch_keys

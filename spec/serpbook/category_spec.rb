@@ -32,6 +32,26 @@ describe Serpbook::Category, :vcr do
     end
   end
 
+  describe 'get_keyword', :focus do
+    before :each do
+      @url = 'https://www.healthline.com/health/home-remedies-for-burns'
+      @keyword = 'best after burn cream'
+      @cat.create(@url, @keyword)
+    end
+
+    after :each do
+      # @cat.delete(@url, @keyword)
+    end
+
+    it 'returns an individual keyword' do
+      ranks = @cat.get_keyword(@url, @keyword, start_date: Date.today)
+      puts ranks.inspect
+      expect(ranks.first['url']).to eq @url.gsub('https://', '')
+      expect(ranks.first['kw']).to eq @keyword
+    end
+
+  end
+
   describe 'add keyword' do
     before :each do
       @url = 'http://test.com/applebees'
